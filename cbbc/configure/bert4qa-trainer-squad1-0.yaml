@@ -1,0 +1,51 @@
+NAME: 'bert4qa-trainer-squad1-0'
+DEVICE: 'cuda:0,1,2,3'
+SEED: 32767
+SUMMARY_DIR: '/home/xqwang/projects/qgqa/qabase/summary'
+CUDNN:
+  BENCHMARK: True
+  DETERMINISTIC: False
+  ENABLED: True
+MODEL:   
+  LKEY: bert
+  SUBKEY: 'bert-base-uncased'
+TRAIN:
+  TRAINER: Trainer
+  DATAPROCESSOR: DataProcessor
+  PROCESSOR: SquadProcessor
+  CONVERTER: SquadConverter
+  DATASET_VERSION: 1
+  DATASET_FILENAME: '/home/xqwang/projects/qgqa/squad1/train-v1.1.json'
+  MAX_INPUT_LENGTH: 384
+  DOC_STRIDE: 128
+  MAX_QUERY_LENGTH: 64
+  BATCH_SIZE: 8
+  WORKERS: 8
+  NUM_EPOCHS: 2
+  NUM_WARMUP_STEPS: 0
+  RESUME: True
+  LOSS_FREQ: 10
+  TB_FREQ: 10
+  DEV_FREQ: 50
+  LR: 0.00005
+  WD: 0.0005
+  REDUCTION: mean
+  DO_LOWER_CASE: True
+DEV:
+  DEDUCER: Deducer
+  PROCESSOR: SquadProcessor
+  CONVERTER: SquadConverter
+  DATASET_FILENAME: '/home/xqwang/projects/qgqa/squad1/train-v1.1.json'
+  # DATASET_FILENAME: '/home/xqwang/projects/qgqa/squad1/dev-v1.1-toy.json'
+  # DATASET_FILENAME: '/home/xqwang/projects/qgqa/squad1/dev-v1.1.json'
+  MAX_INPUT_LENGTH: 384
+  DOC_STRIDE: 128
+  MAX_QUERY_LENGTH: 64
+  BATCH_SIZE: 8
+  WORKERS: 8
+  SNAPSHOT_KEY: latest
+  
+  N_BEST: 20
+  DO_LOWER_CASE: True
+  MAX_ANSWER_LENGTH: 50
+  NULL_SCORE_DIFF_THRESHOLD: 0.0

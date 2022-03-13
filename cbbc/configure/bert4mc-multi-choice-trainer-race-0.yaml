@@ -1,0 +1,49 @@
+NAME: 'bert4mc-multi-choice-trainer-race-0'
+DEVICE: 'cuda:0,1,2,3'
+SEED: 32767
+SUMMARY_DIR: '/home/xqwang/projects/qgqa/qabase/summary'
+CUDNN:
+  BENCHMARK: True
+  DETERMINISTIC: False
+  ENABLED: True
+MODEL:
+  LKEY: 'bert-multi-choice'
+  SUBKEY: 'bert-base-uncased'
+TRAIN:
+  TRAINER: MultiChoiceTrainer
+  DATAPROCESSOR: DataProcessor
+  PROCESSOR: RACEProcessor
+  CONVERTER: RACEConverter
+  DATASET_FILENAME: '/home/xqwang/projects/qgqa/race/train'
+  MAX_INPUT_LENGTH: 384
+  DOC_STRIDE: 128
+  MAX_QUERY_LENGTH: 64
+  BATCH_SIZE: 8
+  WORKERS: 4
+  NUM_EPOCHS: 12
+  NUM_WARMUP_STEPS: 0
+  RESUME: True
+  LOSS_FREQ: 10
+  TB_FREQ: 10
+  DEV_FREQ: 10
+  LR: 0.00003
+  WD: 0.0005
+  REDUCTION: mean
+
+  DO_LOWER_CASE: True
+DEV:
+  DEDUCER: MultiChoiceDeducer
+  PROCESSOR: RACEProcessor
+  CONVERTER: RACEConverter
+  DATASET_FILENAME: '/home/xqwang/projects/qgqa/race/dev'
+  MAX_INPUT_LENGTH: 384
+  DOC_STRIDE: 128
+  MAX_QUERY_LENGTH: 64
+  BATCH_SIZE: 8
+  WORKERS: 4
+  SNAPSHOT_KEY: latest
+
+  N_BEST: 20
+  DO_LOWER_CASE: False
+  MAX_ANSWER_LENGTH: 50
+  NULL_SCORE_DIFF_THRESHOLD: 0.0

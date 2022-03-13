@@ -1,0 +1,5 @@
+**/__pycache__/
+**/.ipynb_checkpoints/
+**/bleurt_checkpoint/
+**/moverscore_checkpoint/
+**/*.json

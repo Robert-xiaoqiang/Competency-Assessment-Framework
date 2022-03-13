@@ -1,0 +1,66 @@
+NAME: 'bert4qa-online-cl-trainer-squad1-factor-all'
+DEVICE: 'cuda:0,1,2,3'
+SEED: 32767
+SUMMARY_DIR: '/home/xqwang/projects/qgqa/qabase/summary'
+CUDNN:
+  BENCHMARK: True
+  DETERMINISTIC: False
+  ENABLED: True
+MODEL:
+  LKEY: bert
+  SUBKEY: 'bert-base-uncased'
+CURRICULUM:
+  ORDER_FILENAME: '/home/xqwang/projects/qgqa/evaluation/squad1_training/difficulty/merge_all.json'
+  START_PERCENT: 0.01
+  INCREASE_INTERVAL: 1000
+  INCREASE_FACTOR: 2
+  FACTOR_INCREASE_FACTOR: 1.2
+  DEV_FACTORS:
+    - READING_WORDS: '/home/xqwang/projects/qgqa/evaluation/squad1_devtoy/keyed_difficulty/reading_words.json'
+    - READING_SENTENCES: '/home/xqwang/projects/qgqa/evaluation/squad1_devtoy/keyed_difficulty/reading_sentences.json'
+    - UNDERSTANDING_WORDS: '/home/xqwang/projects/qgqa/evaluation/squad1_devtoy/keyed_difficulty/understanding_words.json'
+    - UNDERSTANDING_SENTENCES: '/home/xqwang/projects/qgqa/evaluation/squad1_devtoy/keyed_difficulty/understanding_sentences.json'
+  TRAIN_FACTORS:
+    - READING_WORDS: '/home/xqwang/projects/qgqa/evaluation/squad1_training/keyed_difficulty/reading_words.json'
+    - READING_SENTENCES: '/home/xqwang/projects/qgqa/evaluation/squad1_training/keyed_difficulty/reading_sentences.json'
+    - UNDERSTANDING_WORDS: '/home/xqwang/projects/qgqa/evaluation/squad1_training/keyed_difficulty/understanding_words.json'
+    - UNDERSTANDING_SENTENCES: '/home/xqwang/projects/qgqa/evaluation/squad1_training/keyed_difficulty/understanding_sentences.json'
+TRAIN:
+  TRAINER: OnlineCLTrainer
+  DATAPROCESSOR: OnlineCLDataProcessor
+  PROCESSOR: SquadProcessor
+  CONVERTER: SquadConverter
+  DATASET_VERSION: 1
+  DATASET_FILENAME: '/home/xqwang/projects/qgqa/squad1/train-v1.1.json'
+  MAX_INPUT_LENGTH: 384
+  DOC_STRIDE: 128
+  MAX_QUERY_LENGTH: 64
+  BATCH_SIZE: 8
+  WORKERS: 8
+  NUM_EPOCHS: 2 # just for fair comparison with supervised baselines
+  NUM_WARMUP_STEPS: 0
+  RESUME: True
+  LOSS_FREQ: 10
+  TB_FREQ: 10
+  DEV_FREQ: 50
+  LR: 0.00005
+  WD: 0.0005
+  REDUCTION: mean
+  DO_LOWER_CASE: True
+DEV:
+  DEDUCER: Deducer
+  PROCESSOR: SquadProcessor
+  CONVERTER: SquadConverter
+  DATASET_FILENAME: '/home/xqwang/projects/qgqa/squad1/dev-v1.1-toy.json'
+  # DATASET_FILENAME: '/home/xqwang/projects/qgqa/squad1/dev-v1.1.json'
+  MAX_INPUT_LENGTH: 384
+  DOC_STRIDE: 128
+  MAX_QUERY_LENGTH: 64
+  BATCH_SIZE: 8
+  WORKERS: 8
+  SNAPSHOT_KEY: latest
+  
+  N_BEST: 20
+  DO_LOWER_CASE: True
+  MAX_ANSWER_LENGTH: 50
+  NULL_SCORE_DIFF_THRESHOLD: 0.0

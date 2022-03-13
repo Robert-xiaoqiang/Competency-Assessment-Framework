@@ -7,7 +7,7 @@ pip install -r requirements.txt
 
 ## Evaluate a sample with the 4-dimensional capability-specific value map
 
-- Follow the [README]() in the `/competency_metrics/` sub-directory.
+- Follow the [README](https://github.com/Robert-xiaoqiang/Competency-Assessment-Framework/tree/master/competency_metrics) in the `/competency_metrics/` sub-directory.
 
 ## Assess a model's competency from its 4-dimensional capability and boost its capability gradually
 
